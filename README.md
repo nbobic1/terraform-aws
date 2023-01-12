@@ -66,22 +66,20 @@ Terraform configuration should include:
 
 #### IAM configuration
 
-1. Resource `ecs_task_execution_role` which creates IAM Role for ECS tasks:
-    * ECS tasks should be able to assume this role
-    * Attach AWS managed `AmazonECSTaskExecutionRolePolicy`
-    * Check [AWS ECS documentation](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html#create-task-execution-role) for more info
-1. Resource `ecs_instance_role` which creates IAM role for EC2 instances in ECS cluster:
-    * EC2 instances should be able to assume this role
-    * Attach AWS Managed `AmazonEC2ContainerServiceforEC2Role` policy
-1. Resource `ecs_instance_role` to pass `ecs_instance_role` IAM role to an EC2 instance:
-    * More info about [instance profile](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html#ec2-instance-profile)
+**Note:** Due to AWS Academy restrictions, You can't create IAM roles, users or groups. There are predefined `LabRole` role and `LabInstanceProfile` profile which can be used. Normally, ECS requires Task Execution role for tasks, Instance Role and Instance profile for EC2 instances. ECS tasks and EC2 instances should be able to assume their respective roles.
+
+Check [AWS task execution role](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html#create-task-execution-role) and [instance profile](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/iam-roles-for-amazon-ec2.html#ec2-instance-profile) documentation for more info
+
+1. Data source `current` which contains information about current user
+1. Data source `lab_role` which contains information about role `LabRole`
+1. Data source `lab_instance_profile` which contains information about `LabInstanceProfile`
 
 #### Keys configuration
 
 1. Resource `arm_ec2_access_key` which will create [EC2 key pair](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html)
 1. Resource `ebs_encryption_key` which will create `kms_key`. This key will be used to encrypt EC2 instances' EBS volume:
     * [Amazon EC2 Auto Scaling uses service-linked roles to delegate permissions to other AWS services](https://docs.aws.amazon.com/autoscaling/ec2/userguide/key-policy-requirements-EBS-encryption.html). KMS Key policy needs to allow this user to use this key
-    * Configure kms_key policy to allow all kms actions to users `root`, `current user` and `AWSServiceRoleForAutoScaling` role
+    * Configure kms_key policy to allow all kms actions to `current user` and `AWSServiceRoleForAutoScaling` role
     * Use `aws_iam_policy_document` resource for key policy definition and refer it's json value in kms_key resource definition
 
 #### EC2 configuration
@@ -96,7 +94,7 @@ Terraform configuration should include:
     * Instance should be deployed in VPC with `arm_security_group` security group
     * ECS agent starts with `default` cluster configured. It needs to be changed to `arm_ecs_cluster` name. [user_data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#user_data) can be used to provide init script. Consider using [base64encode](https://developer.hashicorp.com/terraform/language/functions/base64encode) and [templatefile](https://developer.hashicorp.com/terraform/language/functions/templatefile) functions
     * Encrypt EBS volume using `ebs_encryption_key` key
-    * Attach `ecs_instance_role` IAM instance profile
+    * Attach `lab_instance_profile` IAM instance profile
     * Add tag `Name=PublicServer`
 1. Resource `arm_autoscaling_group` which handles number of available EC2 instances:
     * set minimum size 1 and maximum size 2
@@ -122,13 +120,21 @@ Terraform configuration should include:
     * `frontend_task` should run on instance in Public subnet
     * `database_task` should run on instance in Private subnet
 1. Resources `frontend_service` and `database_service` which will run and maintain task definitions:
+    * Task should use `lab_role` for both task role and execution role
     * AWS documentation for [ECS services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html)
     * Dummy services can be used
 
+1. Resource `arm_server_private` wich will create EC2 instance:
+    * Use `t3.micro` instance type
+    * Encrypt Root block device with `ebs_encryption_key`
+    * Use `arm_ec2_access_key` key pair for SSH access
+    * Attach to `arm_security_group`
+    * Use public `arm_subnet_private`
 
 ### Tips:
 * Install and configure Terraform https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
 * When you provision a NAT gateway, you are charged for each hour that your NAT gateway is available and each Gigabyte of data that it processes.
+* Add [`.gitignore`](https://github.com/github/gitignore/blob/main/Terraform.gitignore) file to prevent sensitive data being uploaded to GitLab
 * Use `terraform destroy` to save resources
 * Consider using Terraform variables https://developer.hashicorp.com/terraform/language/values/variables
 * Use aws terraform provider https://registry.terraform.io/providers/hashicorp/aws/latest/docs

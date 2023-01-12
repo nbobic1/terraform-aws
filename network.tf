@@ -65,7 +65,6 @@ resource "aws_route_table_association" "arm_rt_private_subnet" {
   route_table_id = aws_route_table.arm_private_rt.id
 }
 
-
 resource "aws_security_group" "arm_security_group" {
   name        = "arm_security_group"
   description = "Security group for ARM EC2 instance"

@@ -37,12 +37,12 @@ resource "aws_ecs_task_definition" "frontend_task" {
       },
     ]
   )
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn = data.aws_iam_role.lab_role.arn
   family             = "frontend-task"
   requires_compatibilities = [
     "EC2",
   ]
-  task_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn = data.aws_iam_role.lab_role.arn
 
   placement_constraints {
     expression = "attribute:ecs.subnet-id in [${aws_subnet.arm_subnet_public.id}]"
@@ -100,12 +100,12 @@ resource "aws_ecs_task_definition" "database_task" {
       },
     ]
   )
-  execution_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  execution_role_arn = data.aws_iam_role.lab_role.arn
   family             = "database-task"
   requires_compatibilities = [
     "EC2",
   ]
-  task_role_arn = aws_iam_role.ecs_task_execution_role.arn
+  task_role_arn = data.aws_iam_role.lab_role.arn
 
   placement_constraints {
     expression = "attribute:ecs.subnet-id in [${aws_subnet.arm_subnet_private.id}]"

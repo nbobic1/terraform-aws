@@ -9,7 +9,6 @@ data "aws_iam_policy_document" "ebs_encryption_kms_key_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.account_id}:root",
         "${data.aws_caller_identity.current.arn}"
       ]
     }
@@ -22,7 +21,6 @@ data "aws_iam_policy_document" "ebs_encryption_kms_key_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.account_id}:root",
         "${data.aws_caller_identity.current.arn}",
         "arn:aws:iam::${local.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
       ]
@@ -43,7 +41,6 @@ data "aws_iam_policy_document" "ebs_encryption_kms_key_policy" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:aws:iam::${local.account_id}:root",
         "${data.aws_caller_identity.current.arn}",
         "arn:aws:iam::${local.account_id}:role/aws-service-role/autoscaling.amazonaws.com/AWSServiceRoleForAutoScaling"
       ]

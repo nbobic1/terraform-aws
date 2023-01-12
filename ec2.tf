@@ -36,7 +36,7 @@ resource "aws_launch_template" "arm_launch_template" {
   }
 
   iam_instance_profile {
-    name = aws_iam_instance_profile.ecs_instance_role.name
+    name = data.aws_iam_instance_profile.lab_instance_profile.name
   }
 
   depends_on = [
