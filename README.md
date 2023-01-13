@@ -1,12 +1,5 @@
 ## Prerequisits
 
-* AWS Account
-* [Installed aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
-* [Configured AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) - Configuration file for academy account can be found in `AWS Details` section of your Learner Lab
-* [Installed Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
-
-## Task
-
 * Create `arm_vpc` VPC:
     * Use `192.168.1.0/24` CIDR
     * Enable DNS hostnames in VPC
