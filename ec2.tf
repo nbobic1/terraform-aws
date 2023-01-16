@@ -77,7 +77,7 @@ resource "aws_autoscaling_group" "arm_autoscaling_group" {
 
 resource "aws_instance" "arm_server_private" {
   ami                    = data.aws_ami.ecs_optimized_amazon_linux_ami.id
-  iam_instance_profile   = aws_iam_instance_profile.ecs_instance_role.name
+  iam_instance_profile   = data.aws_iam_instance_profile.lab_instance_profile.name
   instance_type          = "t3.micro"
   vpc_security_group_ids = [resource.aws_security_group.arm_security_group.id]
   subnet_id              = aws_subnet.arm_subnet_private.id

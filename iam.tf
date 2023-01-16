@@ -8,10 +8,10 @@ data "aws_iam_instance_profile" "lab_instance_profile" {
   name = "LabInstanceProfile"
 }
 
-resource "aws_iam_role" "ecs_task_execution_role" {
-  name               = "ecs_task_execution_role"
-  assume_role_policy = data.aws_iam_policy_document.ecs_task_assume_role_policy.json
-}
+# resource "aws_iam_role" "ecs_task_execution_role" {
+#   name               = "ecs_task_execution_role"
+#   assume_role_policy = data.aws_iam_policy_document.lab_instance_profile.json
+# }
 
 #     principals {
 #       type        = "Service"
