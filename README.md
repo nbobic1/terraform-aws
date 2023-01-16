@@ -100,7 +100,7 @@ Check [AWS task execution role](https://docs.aws.amazon.com/AmazonECS/latest/dev
     * Instance should be deployed in VPC with `arm_security_group` security group
     * ECS agent starts with `default` cluster configured. It needs to be changed to `arm_ecs_cluster` name. [user_data](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template#user_data) can be used to provide init script. Consider using [base64encode](https://developer.hashicorp.com/terraform/language/functions/base64encode) and [templatefile](https://developer.hashicorp.com/terraform/language/functions/templatefile) functions
     * Encrypt EBS volume using `ebs_encryption_key` key
-    * Attach `ecs_instance_role` IAM instance profile
+    * Attach `lab_instance_profile` IAM instance profile
     * Instance should be deployed in `arm_subnet_private`
     * Add tag `Name=PrivateServer`
 
