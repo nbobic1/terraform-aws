@@ -1,5 +1,12 @@
 ## Prerequisits
 
+* AWS Account
+* [Installed aws-cli](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)
+* [Configured AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-files.html) - Configuration file for academy account can be found in `AWS Details` section of your Learner Lab
+* [Installed Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli)
+
+## Task
+
 * Create `arm_vpc` VPC:
     * Use `192.168.1.0/24` CIDR
     * Enable DNS hostnames in VPC
@@ -117,12 +124,6 @@ Check [AWS task execution role](https://docs.aws.amazon.com/AmazonECS/latest/dev
     * AWS documentation for [ECS services](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs_services.html)
     * Dummy services can be used
 
-1. Resource `arm_server_private` wich will create EC2 instance:
-    * Use `t3.micro` instance type
-    * Encrypt Root block device with `ebs_encryption_key`
-    * Use `arm_ec2_access_key` key pair for SSH access
-    * Attach to `arm_security_group`
-    * Use public `arm_subnet_private`
 
 ### Tips:
 * Install and configure Terraform https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli
